@@ -1,4 +1,4 @@
-function LoginWindow() {
+function FtpWindow() {
     var left = 40;
     
     var me = Ti.UI.createWindow({
@@ -48,8 +48,7 @@ function LoginWindow() {
     });
 
     submitButton.addEventListener('click', function(e) {
-        var FtpWindow = require('ui/FtpWindow');
-        new FtpWindow.open();
+        Titanium.API.info("You clicked the button");
     });
 
     me.add(nameLabel);
@@ -64,5 +63,5 @@ function LoginWindow() {
 };
 
 //make constructor function the public component interface
-module.exports = LoginWindow;
+module.exports = FtpWindow;
 
