@@ -19,7 +19,7 @@ if (Ti.version < 1.8 ) {
 	//render appropriate components based on the platform and form factor
 	var osname = Ti.Platform.osname,
 		version = Ti.Platform.version,
-		height = Ti.Platform.displayCaps.platformHeight,
+        height = Ti.Platform.displayCaps.platformHeight,
 		width = Ti.Platform.displayCaps.platformWidth;
 	
 	//considering tablet to have one dimension over 900px - this is imperfect, so you should feel free to decide

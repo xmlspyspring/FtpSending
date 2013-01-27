@@ -1,6 +1,9 @@
+var FtpWindow = require('ui/FtpWindow');
+Ti.include('setting.js');
+
 function LoginWindow() {
     var left = 40;
-    
+
     var me = Ti.UI.createWindow({
         backgroundColor : 'white',
         exitOnClose : true,
@@ -9,7 +12,7 @@ function LoginWindow() {
     });
 
     var nameLabel = Ti.UI.createLabel({
-        text : 'User Name: ',
+        titleid : 'nameLabel',
         textAlign : Ti.UI.TEXT_ALIGNMENT_LEFT,
         top : 30,
         left : left,
@@ -23,8 +26,8 @@ function LoginWindow() {
         width : 200
     });
     var pwdLabel = Ti.UI.createLabel({
-        text : 'Password: ',
-        passwordMask:true,
+        titleid : 'pwdLabel',
+        passwordMask : true,
         textAlign : Ti.UI.TEXT_ALIGNMENT_LEFT,
         top : 30,
         left : left,
@@ -39,17 +42,40 @@ function LoginWindow() {
     });
 
     var submitButton = Ti.UI.createButton({
-        title : 'Submit',
-        left:left,
+        titleid : 'submit',
+        left : left,
         top : 30,
         width : 200,
         height : 45,
-        systemButton: Ti.UI.iPhone.SystemButton.DONE
+        systemButton : Ti.UI.iPhone.SystemButton.DONE
     });
 
     submitButton.addEventListener('click', function(e) {
-        var FtpWindow = require('ui/FtpWindow');
-        new FtpWindow.open();
+        // validate
+        var userName = nameFieldText.getValue();
+        var pwd = pwdFieldText.getValue();
+        if (!userName || !pwd) {
+            alert(L('userNameOrPwdEmpty'));
+            return;
+        }
+
+        var httpClient = Ti.Network.createHTTPClient();
+        httpClient.onload = function() {
+            me.close();
+            new FtpWindow().open();
+        };
+        httpClient.onerror = function(e) {
+            Ti.API.error(e.error);
+            alert(L(netError));
+        };
+
+        // Prepare the connection.
+        client.open("POST", LOGIN_URL);
+        // Send the request.
+        client.send({
+            email : userName,
+            password : pwd
+        });
     });
 
     me.add(nameLabel);
